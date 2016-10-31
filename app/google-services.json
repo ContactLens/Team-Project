@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "231575471217",
+    "firebase_url": "https://contactlens-70713.firebaseio.com",
+    "project_id": "contactlens-70713",
+    "storage_bucket": "contactlens-70713.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:231575471217:android:c958795907f0fa67",
+        "android_client_info": {
+          "package_name": "io.firebase.contactlens"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "231575471217-78hhp7ove1qmec3im1avt9ob3onsl2h8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCHLegaPbn4WEAADytWPigd2X-yyOewd8Q"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
