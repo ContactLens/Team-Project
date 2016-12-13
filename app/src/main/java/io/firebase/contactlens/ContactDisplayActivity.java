@@ -1,15 +1,13 @@
+
 package io.firebase.contactlens;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -19,41 +17,36 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class QueryDatabase extends AppCompatActivity implements View.OnClickListener {
+public class ContactDisplayActivity extends AppCompatActivity implements View.OnClickListener{
 
     private FirebaseAuth firebaseAuth;
-    private DatabaseReference databaseReference, databaseReferenceName, databaseReferenceAddress, databaseReferenceNumber, databaseReferenceFacebook, databaseReferenceTwitter, databaseReferenceLinkedin, databaseReferenceGithub, databaseReferenceUsers, databaseReferenceContacts;
+    private Button buttonRetrieve;
+    private DatabaseReference databaseReference, databaseReferenceName, databaseReferenceAddress, databaseReferenceNumber, databaseReferenceFacebook, databaseReferenceTwitter, databaseReferenceLinkedin, databaseReferenceGithub;
     private TextView textViewName, textViewAddress, textViewNumber, textViewFacebook, textViewTwitter, textViewLinkedin, textViewGithub;
-    private Button buttonScan;
-    public String newscanContent, users, contacts;
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_query_database);
-
+        setContentView(R.layout.activity_contact_display);
 
         databaseReference = FirebaseDatabase.getInstance().getReference();
-        newscanContent = getIntent().getStringExtra("scanContent").trim();
         firebaseAuth = FirebaseAuth.getInstance();
-        buttonScan = (Button) findViewById(R.id.buttonRetrieve);
-        buttonScan.setOnClickListener(this);
-
+        buttonRetrieve = (Button) findViewById(R.id.buttonRetrieve);
+        //buttonRetrieve.setOnClickListener(this);
+        retrieveDetails();
     }
 
     public void retrieveDetails() {
+        String UID = "11QPZgse5SgTwwX1LgqbvqqUgVz1";
         FirebaseUser user = firebaseAuth.getCurrentUser();
-        databaseReferenceName = (FirebaseDatabase.getInstance().getReference().child(newscanContent).child("name"));
-        databaseReferenceAddress = (FirebaseDatabase.getInstance().getReference().child(newscanContent).child("email"));
-        databaseReferenceNumber = (FirebaseDatabase.getInstance().getReference().child(newscanContent).child("number"));
-        databaseReferenceFacebook = (FirebaseDatabase.getInstance().getReference().child(newscanContent).child("facebook"));
-        databaseReferenceTwitter = (FirebaseDatabase.getInstance().getReference().child(newscanContent).child("twitter"));
-        databaseReferenceLinkedin = (FirebaseDatabase.getInstance().getReference().child(newscanContent).child("linkedin"));
-        databaseReferenceGithub = (FirebaseDatabase.getInstance().getReference().child(newscanContent).child("github"));
-        databaseReferenceUsers = (FirebaseDatabase.getInstance().getReference().child(user.getUid()).child("users"));
-        databaseReferenceContacts = (FirebaseDatabase.getInstance().getReference().child(user.getUid()).child("contacts"));
-
+        databaseReferenceName = (FirebaseDatabase.getInstance().getReference().child(UID).child("name"));
+        databaseReferenceAddress = (FirebaseDatabase.getInstance().getReference().child(UID).child("email"));
+        databaseReferenceNumber = (FirebaseDatabase.getInstance().getReference().child(UID).child("number"));
+        databaseReferenceFacebook = (FirebaseDatabase.getInstance().getReference().child(UID).child("facebook"));
+        databaseReferenceTwitter = (FirebaseDatabase.getInstance().getReference().child(UID).child("twitter"));
+        databaseReferenceLinkedin = (FirebaseDatabase.getInstance().getReference().child(UID).child("linkedin"));
+        databaseReferenceGithub = (FirebaseDatabase.getInstance().getReference().child(UID).child("github"));
 
         textViewName = (TextView) findViewById(R.id.textViewName);
         textViewAddress = (TextView) findViewById(R.id.textViewAddress);
@@ -141,71 +134,13 @@ public class QueryDatabase extends AppCompatActivity implements View.OnClickList
             public void onCancelled(DatabaseError databaseError) {
             }
         });
-
-        databaseReferenceUsers.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()) {
-                    users = dataSnapshot.getValue().toString();
-                    databaseReferenceUsers.setValue(users + newscanContent + "/");
-                }
-                else{
-                    databaseReferenceUsers.setValue(newscanContent + "/");
-                }
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });
-
-        databaseReferenceContacts.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(final DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()) {
-                    final Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        public void run() {
-                            contacts = dataSnapshot.getValue().toString();
-                            databaseReferenceContacts.setValue(contacts + (textViewName.getText().toString().trim()) + "/");
-                        }
-                    }, 100);
-                }
-                else{
-                    final Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            databaseReferenceContacts.setValue((textViewName.getText().toString().trim()) + "/");
-                        }
-                    }, 100);
-                }
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });
-
-
     }
 
-    @Override
-    public void onBackPressed()
-    {
-        startActivity(new Intent(this, MenuActivity.class));
-    }
-
-    @Override
+    //@Override
     public void onClick(View view) {
-        if (view == buttonScan && newscanContent.length() == 28) {
+        /*if (view == buttonRetrieve) {
             retrieveDetails();
-            buttonScan.setVisibility(View.GONE);
-
-        }
-        else if(newscanContent.length() != 28){
-            Toast t = Toast.makeText(this, "Error: The QR you have scanned is not valid",Toast.LENGTH_LONG);
-            t.setGravity(Gravity.CENTER_VERTICAL,0,0);
-            t.show();
-        }
+        }*/
 
         if(view == textViewFacebook && textViewFacebook.getText().toString().trim() != ""){
             String url = textViewFacebook.getText().toString().trim();
@@ -253,5 +188,3 @@ public class QueryDatabase extends AppCompatActivity implements View.OnClickList
         }
     }
 }
-
-

@@ -17,14 +17,6 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text=""
-            android:id="@+id/textViewInstructions"
-            android:layout_gravity="center_horizontal"/>
-
         <EditText
             android:id="@+id/editTextName"
             android:layout_width="match_parent"
@@ -72,28 +64,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Save Information"/>
-        //+++++++++++++++++++++++++++++++
-        <Button
-            android:id="@+id/buttonQuery"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Query?"/>
-        //++++++++++++++++++++++++++++++++++
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Logout"
-            android:id="@+id/buttonLogout"
-            android:layout_gravity="center_horizontal"/>
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="My QR"
-            android:id="@+id/buttonMyQR"
-            android:layout_gravity="center_horizontal"/>
-
 
     </LinearLayout>
 </ScrollView>

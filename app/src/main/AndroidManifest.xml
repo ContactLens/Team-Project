@@ -30,8 +30,12 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
         />
-        <activity android:name=".QRgeneratorActivity" />
-        <activity android:name=".QRGeneratorActivity"></activity>
+        <activity android:name=".QRGeneratorActivity" />
+        <activity android:name=".QRScanner" />
+        <activity android:name=".MenuActivity" />
+        <activity android:name=".ContactListActivity" />
+        <activity android:name=".Help" />
+        <activity android:name=".ContactDisplayActivity"></activity>
     </application>
 
 </manifest>

@@ -1,8 +1,6 @@
 package io.firebase.contactlens;
-
-/**
- * Created by jamie_000 on 16/10/2016.
- */
+//This is generated activity simply to handle the UserInformation function,
+// it doesn't get displayed anywhere and doesn't take up a screen
 
 public class UserInformation {
 
@@ -14,6 +12,7 @@ public class UserInformation {
     public String linkedin;
     public String github;
 
+    //Simply packages the given strings as an object so that they can all be handled by Firebase at once
     public UserInformation(String name, String email, String number, String facebook, String twitter, String linkedin, String github) {
         this.email = email;
         this.facebook = facebook;
@@ -23,5 +22,4 @@ public class UserInformation {
         this.number = number;
         this.twitter = twitter;
     }
-
 }

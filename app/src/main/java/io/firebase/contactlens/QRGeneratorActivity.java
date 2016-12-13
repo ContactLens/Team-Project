@@ -36,10 +36,9 @@ public class QRGeneratorActivity extends AppCompatActivity {
             BitMatrix bitMatrix = multiFormatWriter.encode(text2QR, BarcodeFormat.QR_CODE,200,200);
             BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
             Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
-            //!!!!!!!
+
             imageView = (ImageView) this.findViewById(R.id.imageView);
             imageView.setImageBitmap(bitmap);
-            //!!!!!!
 
         } catch (WriterException e) {
             e.printStackTrace();

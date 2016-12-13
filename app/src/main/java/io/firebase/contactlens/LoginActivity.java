@@ -22,7 +22,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private Button buttonSignIn;
     private EditText editTextEmail;
     private EditText editTextPassword;
-    private TextView textViewSignup;
+    private TextView textViewSignUp;
 
     private FirebaseAuth firebaseAuth;
 
@@ -45,12 +45,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         editTextEmail = (EditText) findViewById(R.id.editTextEmail);
         editTextPassword = (EditText) findViewById(R.id.editTextPassword);
         buttonSignIn = (Button) findViewById(R.id.buttonSignIn);
-        textViewSignup = (TextView) findViewById(R.id.textViewSignUp);
+        textViewSignUp = (TextView) findViewById(R.id.textViewSignUp);
 
         progressDialog = new ProgressDialog(this);
 
         buttonSignIn.setOnClickListener(this);
-        textViewSignup.setOnClickListener(this);
+        textViewSignUp.setOnClickListener(this);
     }
 
     private void userLogin(){
@@ -83,7 +83,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         if(task.isSuccessful()){
                             //start the profile actvity
                             finish();
-                            startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+                            startActivity(new Intent(getApplicationContext(), MenuActivity.class));
                         }else{
                             Toast.makeText(LoginActivity.this, "Login failed, please try again",Toast.LENGTH_SHORT).show();
                         }
@@ -96,7 +96,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if(view == buttonSignIn){
             userLogin();
         }
-        if(view == textViewSignup){
+        if(view == textViewSignUp){
             finish();
             startActivity(new Intent(this, MainActivity.class));
         }
