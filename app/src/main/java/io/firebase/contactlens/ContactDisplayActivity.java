@@ -197,10 +197,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -210,26 +208,24 @@ import com.google.firebase.database.ValueEventListener;
 public class ContactDisplayActivity extends AppCompatActivity implements View.OnClickListener{
 
     private FirebaseAuth firebaseAuth;
-    private Button buttonRetrieve;
     private DatabaseReference databaseReference, databaseReferenceName, databaseReferenceAddress, databaseReferenceNumber, databaseReferenceFacebook, databaseReferenceTwitter, databaseReferenceLinkedin, databaseReferenceGithub;
     private TextView textViewName, textViewAddress, textViewNumber, textViewFacebook, textViewTwitter, textViewLinkedin, textViewGithub;
     public String UID;
-    ;
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_display);
+        //retrieves the UID made available by ContactListActivity
         UID = getIntent().getStringExtra("UID").trim();
 
         databaseReference = FirebaseDatabase.getInstance().getReference();
         firebaseAuth = FirebaseAuth.getInstance();
-        UID = getIntent().getStringExtra("UID").trim();
         retrieveDetails();
     }
 
     public void retrieveDetails() {
+        //gets references to the positions in the database each of the information fields of the user associated with the UID
         databaseReferenceName = (FirebaseDatabase.getInstance().getReference().child(UID).child("name"));
         databaseReferenceAddress = (FirebaseDatabase.getInstance().getReference().child(UID).child("email"));
         databaseReferenceNumber = (FirebaseDatabase.getInstance().getReference().child(UID).child("number"));
@@ -238,6 +234,7 @@ public class ContactDisplayActivity extends AppCompatActivity implements View.On
         databaseReferenceLinkedin = (FirebaseDatabase.getInstance().getReference().child(UID).child("linkedin"));
         databaseReferenceGithub = (FirebaseDatabase.getInstance().getReference().child(UID).child("github"));
 
+        //initialises TextViews declared in the layout file
         textViewName = (TextView) findViewById(R.id.textViewName);
         textViewAddress = (TextView) findViewById(R.id.textViewAddress);
         textViewNumber = (TextView) findViewById(R.id.textViewNumber);
@@ -246,18 +243,17 @@ public class ContactDisplayActivity extends AppCompatActivity implements View.On
         textViewLinkedin = (TextView) findViewById(R.id.textViewLinkedIn);
         textViewGithub = (TextView) findViewById(R.id.textViewGithub);
 
-        textViewName.setOnClickListener(this);
-        textViewAddress.setOnClickListener(this);
-        textViewNumber.setOnClickListener(this);
         textViewFacebook.setOnClickListener(this);
         textViewTwitter.setOnClickListener(this);
         textViewLinkedin.setOnClickListener(this);
         textViewGithub.setOnClickListener(this);
 
+        //places listeners on the appropriate database rows, retrieves current value and any value if it changes
         databaseReferenceName.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String text = dataSnapshot.getValue().toString();
+                //places the value in the database into the displayed textfield
                 textViewName.setText(text);
             }
             @Override
@@ -329,17 +325,22 @@ public class ContactDisplayActivity extends AppCompatActivity implements View.On
 
     @Override
     public void onClick(View view) {
+        //makes the facebook textfield open its contents in browser
         if(view == textViewFacebook && textViewFacebook.getText().toString().trim() != ""){
             String url = textViewFacebook.getText().toString().trim();
+            //in order to open in browser the url must include http:// or https://
+            //this checks if the entry is of the right format and adds parts if necessary
             if(!url.startsWith("www.")&& !url.startsWith("http://") && !url.startsWith("https://")){
                 url = "www."+url;
             }
             if(!url.startsWith("http://") && !url.startsWith("https://")){
                 url = "http://"+url;
             }
+            //adds browser intent
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
             startActivity(browserIntent);
         }
+        //similar to above
         else if(view == textViewTwitter  && textViewTwitter.getText().toString().trim() != ""){
             String url = textViewTwitter.getText().toString().trim();
             if(!url.startsWith("www.")&& !url.startsWith("http://")){
