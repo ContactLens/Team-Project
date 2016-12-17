@@ -23,7 +23,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private DatabaseReference databaseReference, databaseReferenceName, databaseReferenceAddress,databaseReferenceNumber,databaseReferenceFacebook, databaseReferenceTwitter,databaseReferenceLinkedin, databaseReferenceGithub;
     private EditText editTextName, editTextAddress, editTextNumber, editTextFacebook, editTextTwitter, editTextLinkedIn, editTextGitHub;
     private Button buttonSave;
-    private String nameVar,emailVar,numVar,faceVar,twitVar,linkVar,gitVar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +37,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         }
         //gets an instance of the user
         FirebaseUser user = firebaseAuth.getCurrentUser();
-        //gets reference to firebase database based on values in google services file
+        //gets reference to firebase database associated with this app based on values in the google services file
         databaseReference = FirebaseDatabase.getInstance().getReference();
 
         //links variables with their instances in the activity xml file
@@ -51,7 +50,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         editTextGitHub = (EditText) findViewById(R.id.editTextGithub);
         buttonSave = (Button) findViewById(R.id.buttonSave);
 
-        //gets references for each of the child nodes under current users UID in database
+        //gets references for each of the child nodes under current users ID in database
         databaseReferenceName = (FirebaseDatabase.getInstance().getReference().child(user.getUid()).child("name"));
         databaseReferenceAddress = (FirebaseDatabase.getInstance().getReference().child(user.getUid()).child("email"));
         databaseReferenceNumber = (FirebaseDatabase.getInstance().getReference().child(user.getUid()).child("number"));
@@ -65,15 +64,15 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         databaseReferenceName.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                //Takes a snapshot of the childs content, if it's not null then the contents are written to a string and displayed in the edittext.
-                //This was intended to expedite the detail submission process as without it the user must fill in every edittext even if only changing one value
+                //Takes a snapshot of the childs content, if it's not null then the contents are written to a string and displayed in the EditText.
+                //This was intended to expedite the detail submission process as without it the user must fill in every EditText again
+                // even if only changing one value
                 if (dataSnapshot.exists()) {
                     String text = dataSnapshot.getValue().toString();
                     editTextName.setText(text);
                 }
-                //if it's null (i.e the user has not submitted any info yet) the edittext is set to a default value. This prevents a crash on attempting
-                //to fill an edittext with a null value
-
+                //as this only fires if the given field exist in the database if the field were not to exist nothing happens and the EditText will
+                //simply contain the hint from the xml file
             }
             @Override
             public void onCancelled(DatabaseError databaseError){
@@ -169,13 +168,15 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         String twit;
         String link;
         String git;
-
+        //checks if user has input anything into the EditText
         if (editTextName.getText().toString().equals("")) {
+            //if not, assign an empty string to name
             name = "";
         } else {
+            //if not empty, assign the value to name
             name = editTextName.getText().toString().trim();
         }
-
+        //similar to above
         if (editTextAddress.getText().toString().equals("")) {
             add = "";
         } else {
@@ -207,10 +208,12 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             git = editTextGitHub.getText().toString().trim();
         }
 
+        //add the strings generated above to the UserInformation method
         UserInformation userInformation = new UserInformation(name, add, num, face, twit, link, git);
 
         FirebaseUser user = firebaseAuth.getCurrentUser();
 
+        //set the values of the contact details rows in the user database entry to those of the EditTexts
         databaseReference.child(user.getUid()).setValue(userInformation);
     }
 

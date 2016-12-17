@@ -28,16 +28,21 @@ public class QRGeneratorActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser user = firebaseAuth.getCurrentUser();
 
-
         final Context context = this;
+
+        //creates a string containing the user ID of the currently logged in user
         String text2QR = user.getUid().toString();
+        //ZXing method for initialising an undefined encoder
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
         try {
+            //creates a 200x200 matrix of bits representing the string presented in the structure of a QR code (as opposed to a barcode)
             BitMatrix bitMatrix = multiFormatWriter.encode(text2QR, BarcodeFormat.QR_CODE,200,200);
             BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
+            //encodes the bit matrix into a bitmap image
             Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
 
             imageView = (ImageView) this.findViewById(R.id.imageView);
+            //sets the imageview to display the bitmap
             imageView.setImageBitmap(bitmap);
 
         } catch (WriterException e) {
