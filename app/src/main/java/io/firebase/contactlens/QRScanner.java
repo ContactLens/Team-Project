@@ -18,6 +18,7 @@ public class QRScanner extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qrscanner);
 
+        //sets up QR scanner attributes
         final Activity activity = this;
         IntentIntegrator integrator= new IntentIntegrator(activity);
         integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE_TYPES);
@@ -32,8 +33,11 @@ public class QRScanner extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode,resultCode,data);
+        //on scanning successfully
         if(result != null)
         {
+            //check scans contents, if there are none, implying the user activated scan successfully but pressed back before scanning a code, return
+            //to the menu
             if(result.getContents()==null){
                 Toast scanCancel = Toast.makeText(this, "Scan Cancelled",Toast.LENGTH_SHORT);
                 scanCancel.setGravity(Gravity.CENTER_VERTICAL,0,0);
@@ -41,6 +45,7 @@ public class QRScanner extends AppCompatActivity {
 
                 finish();
             }
+            //if a QR was scanned place the scanned data into a string variable and make this available for use in the QueryDatabase activity
             else{
                 Toast scan = Toast.makeText(this, "Scan Complete",Toast.LENGTH_SHORT);
                 scan.setGravity(Gravity.CENTER_VERTICAL,0,0);
