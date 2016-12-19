@@ -21,6 +21,7 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
 
         firebaseAuth = FirebaseAuth.getInstance();
 
+        //ensures the user is logged in and thus allowed to be in the menu, if not they are returned to the login page
         if (firebaseAuth.getCurrentUser() == null) {
             finish();
             startActivity(new Intent(this, LoginActivity.class));
